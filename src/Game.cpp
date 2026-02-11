@@ -1,7 +1,12 @@
 #include <Game.hpp>
+#include <iostream>
 
 Game::Game()
+: m_window(sf::VideoMode(m_window_size), "Village Invaders")
+, m_screen(m_window) 
+, m_player(Player(m_dt, m_window_size))
 {
+    m_window.setFramerateLimit(30);
 }
 
 Game::~Game()
@@ -10,36 +15,40 @@ Game::~Game()
 
 void Game::GameLoop()
 {   
-    while ( m_screen.GetWindow().isOpen() && (!m_quit_flag))
+    while ( m_window.isOpen() && (!m_quit_flag))
 	{   
-        while (const std::optional event = m_screen.GetWindow().pollEvent())
+        while (const std::optional event = m_window.pollEvent())
         {
+
             if ( event->is<sf::Event::Closed>() )
 			{
-				m_screen.GetWindow().close();
+				m_window.close();
 			}
-            // Reset one-frame key flags if needed
-            m_detected_keys.esc = false;
-            m_detected_keys.enter = false;
-            m_detected_keys.p = false;
             DetectInput();
-            HandleState();
-            // limit frame rate
-            // sf::sleep(sf::milliseconds(100));
-            Display();
         }
+
+        HandleState();
+        HandlePlayerInput();
+        UpdateEntityLocations();
+        Display();
     }
-    m_screen.GetWindow().close();
+    m_window.close();
 }
 
 void Game::DetectInput()
 {
+    m_detected_keys.esc = false;
+    m_detected_keys.enter = false;
+    m_detected_keys.p = false;
+    m_detected_keys.a = false;
+    m_detected_keys.d = false;
+
     m_detected_keys.esc = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
     m_detected_keys.enter = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter);
     m_detected_keys.p = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P);  
     // m_detected_keys.space = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space); 
-    // m_detected_keys.a = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A); 
-    // m_detected_keys.d = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D); 
+    m_detected_keys.a = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A); 
+    m_detected_keys.d = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D); 
 }
 
 void Game::HandleState()
@@ -70,8 +79,31 @@ void Game::HandleState()
     }
 }
 
+void Game::HandlePlayerInput()
+{  
+
+    float velocity_x = 0;
+    
+    if (m_detected_keys.a);
+    {
+       velocity_x -= 25;
+       std::cout << "A pressed"; 
+    }
+
+    if (m_detected_keys.d)
+    {
+        velocity_x += 25; 
+        std::cout << "D pressed"; 
+    }
+
+    sf::Vector2f velocity = sf::Vector2f (velocity_x, 0);
+
+    m_player.SetVelocity(velocity);
+}
+
 void Game::Display()
-{
+{   
+    m_window.clear();
     switch (m_state)
     {
         case GameState::Menu:
@@ -80,6 +112,7 @@ void Game::Display()
 
         case GameState::Playing:
             m_screen.DisplayGame();
+            m_screen.DisplayEntity(m_player);
             break;
 
         case GameState::Paused:
@@ -90,6 +123,16 @@ void Game::Display()
             m_quit_flag = true;
             break;
     }
+    m_window.display();
+}
+
+void Game::UpdateEntityLocations()
+{
+    // player
+    m_player.UpdateLocation();
+    
+    // enemies 
+    // for enemy do ...
 }
 
 void Game::SetQuitFlag()
