@@ -28,8 +28,8 @@ struct DetectedKeys
 class Game
 {
 private:
-    const float m_dt = 0.05f;                                        // delta time
-    const sf::Vector2u m_window_size = sf::Vector2u(800, 600);
+    const float m_dt = 0.05f;                                        // delta time in seconds
+    const sf::Vector2u m_window_size = sf::Vector2u(1200, 800);
     bool m_quit_flag = false;
     GameState m_state = GameState::Menu;
     DetectedKeys m_detected_keys;

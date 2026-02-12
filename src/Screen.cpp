@@ -47,8 +47,10 @@ void Screen::DisplayGame()
 
 void Screen::DisplayEntity(const Entity& entity)
 {
-	sf::CircleShape shape = sf::CircleShape( 100.f );
+	sf::Vector2f shape_vector = entity.GetShapeVecor();
+	sf::RectangleShape shape = sf::RectangleShape( shape_vector );
 	shape.setFillColor( sf::Color::Green );
-	shape.setPosition(entity.GetPosition());
+	sf::Vector2f top_left_corner = entity.GetTopLeftCorner();
+	shape.setPosition(top_left_corner);
 	m_window.draw(shape);
 }

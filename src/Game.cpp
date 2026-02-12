@@ -7,6 +7,7 @@ Game::Game()
 , m_player(Player(m_dt, m_window_size))
 {
     m_window.setFramerateLimit(30);
+    
 }
 
 Game::~Game()
@@ -28,8 +29,6 @@ void Game::GameLoop()
         }
 
         HandleState();
-        HandlePlayerInput();
-        UpdateEntityLocations();
         Display();
     }
     m_window.close();
@@ -65,6 +64,10 @@ void Game::HandleState()
         case GameState::Playing:
             if (m_detected_keys.p)
                 m_state = GameState::Paused;
+            
+            HandlePlayerInput();
+            UpdateEntityLocations();
+
             break;
 
         case GameState::Paused:
@@ -83,17 +86,16 @@ void Game::HandlePlayerInput()
 {  
 
     float velocity_x = 0;
-    
-    if (m_detected_keys.a);
+    float speed = m_player.GetSpeed();
+
+    if (m_detected_keys.a)
     {
-       velocity_x -= 25;
-       std::cout << "A pressed"; 
+       velocity_x -= speed;
     }
 
     if (m_detected_keys.d)
     {
-        velocity_x += 25; 
-        std::cout << "D pressed"; 
+        velocity_x += speed; 
     }
 
     sf::Vector2f velocity = sf::Vector2f (velocity_x, 0);
