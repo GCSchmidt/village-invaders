@@ -39,9 +39,11 @@ void Screen::DisplayPause()
 	WriteText();
 }
 
-void Screen::DisplayGame()
+void Screen::DisplayGame(float play_time)
 {
-	SetDisplayText("You are playing");
+	float rounded_play_time = std::round(play_time);
+	std::string display_text = "Time: " + std::to_string(rounded_play_time) + "s";
+	SetDisplayText(display_text);
 	WriteText();
 }
 
@@ -51,6 +53,16 @@ void Screen::DisplayEntity(const Entity& entity)
 	sf::RectangleShape shape = sf::RectangleShape( shape_vector );
 	shape.setFillColor( sf::Color::Green );
 	sf::Vector2f top_left_corner = entity.GetTopLeftCorner();
+	shape.setPosition(top_left_corner);
+	m_window.draw(shape);
+}
+
+void Screen::DisplayBullet(const Bullet &bullet)
+{
+	float radius = bullet.GetRadius();
+	sf::CircleShape shape = sf::CircleShape( radius );
+	shape.setFillColor( sf::Color::White );
+	sf::Vector2f top_left_corner = bullet.GetTopLeftCorner();
 	shape.setPosition(top_left_corner);
 	m_window.draw(shape);
 }

@@ -21,9 +21,31 @@ sf::Vector2f Entity::GetTopLeftCorner() const
     return m_position - m_shape_vector/2.f;
 }
 
+int32_t Entity::GetMinShotPeriod() const
+{
+    return m_min_shot_period;
+}
+
 sf::Vector2f Entity::GetPosition() const
 {
     return m_position;
+}
+
+sf::Vector2f Entity::GetNewBulletPosition() const
+{   
+    sf::Vector2f bullet_postion;
+    bullet_postion.x = m_position.x;
+    sf::Vector2f half_shape = m_shape_vector/2.f;
+    sf::Vector2f shift;
+    shift.x = half_shape.x * m_forward_vector.x;
+    shift.y = half_shape.y * m_forward_vector.y;
+    bullet_postion = m_position + shift;
+    return bullet_postion;
+}
+
+sf::Vector2f Entity::GetForwardVector() const
+{   
+    return m_forward_vector;
 }
 
 sf::Vector2f Entity::GetShapeVecor() const
@@ -36,7 +58,7 @@ bool Entity::CheckIfDead() const
     return (m_health_points <= 0);
 }
 
-void Entity::UpdateLocation()
+void Entity::UpdatePosition()
 {
     sf::Vector2f shift = m_velocity * m_dt;
     sf::Vector2f new_position = m_position + shift;
