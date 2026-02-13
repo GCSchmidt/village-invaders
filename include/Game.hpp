@@ -52,7 +52,7 @@ private:
     void HanldeShooting();
     void Display();
     void UpdateEntityLocations();
-    void IsOutOfBounds(sf::Vector2f position);
+    void RemoveBullets();
 
 public:
     Game();

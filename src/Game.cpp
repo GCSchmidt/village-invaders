@@ -194,7 +194,13 @@ void Game::UpdateEntityLocations()
     {
         bullet.UpdatePosition();
     } 
+    
+    // enemies 
+    // for enemy do ...
+}
 
+void Game::RemoveBullets()
+{
     // remove out of bounds bullets
     m_bullets.erase(
         std::remove_if(m_bullets.begin(), m_bullets.end(),
@@ -204,9 +210,6 @@ void Game::UpdateEntityLocations()
             }),
         m_bullets.end()
     );
-
-    // enemies 
-    // for enemy do ...
 }
 
 void Game::SetQuitFlag()
