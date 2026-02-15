@@ -7,8 +7,6 @@ Game::Game()
 , m_player(Player(m_dt, m_window_size))
 {
     m_window.setFramerateLimit(60);
-    // create enemies base on rows and collumns
-    CreateEnemies();
 }
 
 Game::~Game()
@@ -31,8 +29,16 @@ void Game::GameLoop()
 
         HandleState();
         Display();
+        
     }
     m_window.close();
+}
+
+void Game::PlayLoop()
+{
+    CheckIfLost();
+    HandlePlayerInput();
+    UpdateSpriteLocations();
 }
 
 void Game::DetectInput()
@@ -58,12 +64,13 @@ void Game::HandleState()
         case GameState::Menu:
             if (m_detected_keys.esc)
             {
-                m_state = GameState::Exit;
+                // m_state = GameState::Exit;
             }
             else if (m_detected_keys.enter)
             {
                 m_state = GameState::Playing;
                 m_clock.restart();
+                SetupGame();
             }
             break;
 
@@ -73,11 +80,10 @@ void Game::HandleState()
                 m_state = GameState::Paused;
                 m_clock.stop();
             }
-
-            
-            HandlePlayerInput();
-            UpdateSpriteLocations();
-
+            else
+            {
+                PlayLoop();
+            }
             break;
 
         case GameState::Paused:
@@ -91,9 +97,16 @@ void Game::HandleState()
                 m_state = GameState::Playing;
                 m_clock.start();
             }
+            break;
+        
+        case GameState::Lost:
+            if (m_detected_keys.esc)
+            {
+                m_clock.stop();
+                m_state = GameState::Menu;
+            }
 
             break;
-
         case GameState::Exit:
             break;
     }
@@ -119,15 +132,14 @@ void Game::HandlePlayerMovement()
     m_player.SetVelocity(velocity);
 }
 
-void Game::HanldeShooting()
+void Game::HanldePlayerShooting()
 {
     static int32_t last_shot_time = 0;
     if (m_detected_keys.space)
     {
         int32_t current_shot_time = m_clock.getElapsedTime().asMilliseconds();
-        int32_t shot_period = current_shot_time - last_shot_time;
-        int32_t min_shot_period = m_player.GetMinShotPeriod();
-        if ( shot_period > min_shot_period)
+        bool new_shot = m_player.UpdateLastShotTime(current_shot_time);
+        if (new_shot)
         {
             sf::Vector2f forward_vector = m_player.GetForwardVector();
             sf::Vector2f position = m_player.GetNewBulletPosition();
@@ -140,14 +152,13 @@ void Game::HanldeShooting()
             m_bullets.push_back(player_bullet);
             last_shot_time = current_shot_time; 
         }
-        
     }
 }
 
 void Game::HandlePlayerInput()
 {  
     HandlePlayerMovement();
-    HanldeShooting();
+    HanldePlayerShooting();
 }
 
 void Game::Display()
@@ -161,7 +172,9 @@ void Game::Display()
 
         case GameState::Playing:
             m_play_time = m_clock.getElapsedTime().asSeconds();
+            
             m_screen.DisplayGame(m_play_time);
+            m_screen.DisplayLine(m_lose_line_position_y);
             m_screen.DisplayPlayer(m_player);
 
             DisplayBullets();
@@ -171,6 +184,10 @@ void Game::Display()
 
         case GameState::Paused:
             m_screen.DisplayPause();
+            break;
+        
+        case GameState::Lost:
+            m_screen.DisplayLost();
             break;
 
         case GameState::Exit:
@@ -250,6 +267,18 @@ void Game::CreateEnemies()
     }
 }
 
+void Game::RemoveEnemies()
+{
+    m_enemies.clear();
+}
+
+void Game::SetupGame()
+{
+    RemoveEnemies();
+    m_player.Reset();
+    CreateEnemies();
+}
+
 void Game::SetQuitFlag()
 {
     m_quit_flag = ( m_state == GameState::Exit);
@@ -258,4 +287,19 @@ void Game::SetQuitFlag()
 bool Game::GetQuitFalg()
 {
     return m_quit_flag;
+}
+
+void Game::CheckIfLost()
+{
+    for (Enemy& enemy : m_enemies)
+    {
+        float position_y = enemy.GetPosition().y;
+        
+        // enemy has entered the village
+        if (position_y >= m_lose_line_position_y)
+        {
+            m_state = GameState::Lost;
+            return;
+        }
+    }   
 }

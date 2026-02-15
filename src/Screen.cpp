@@ -29,13 +29,19 @@ void Screen::WriteText()
 
 void Screen::DisplayMenu()
 {
-    SetDisplayText("Press [ENTER] to Start or [ESC] to Quit");
+    SetDisplayText("Press [ENTER] to Start");
 	WriteText();
 }
 
 void Screen::DisplayPause()
 {
-    SetDisplayText("Press [ENTER] to Resume or [ESC] for Menu");
+    SetDisplayText("Game is Paused\nPress [ENTER] to Resume\nor [ESC] for Menu");
+	WriteText();
+}
+
+void Screen::DisplayLost()
+{
+	SetDisplayText("You Failed to Save the Village\nPress [ESC] for Menu");
 	WriteText();
 }
 
@@ -45,6 +51,21 @@ void Screen::DisplayGame(float play_time)
 	std::string display_text = "Time: " + std::to_string(rounded_play_time) + "s";
 	SetDisplayText(display_text);
 	WriteText();
+}
+
+void Screen::DisplayLine(float m_lose_line_position_y)
+{
+	sf::Vector2f shape_vector;
+	sf::Vector2u window_size = m_window.getSize();
+	shape_vector.x = window_size.x;
+	shape_vector.y = 10;
+	sf::RectangleShape shape = sf::RectangleShape( shape_vector );
+	shape.setFillColor( sf::Color::White );
+	sf::Vector2f top_left_corner;
+	top_left_corner.x = 0;
+	top_left_corner.y = m_lose_line_position_y;
+	shape.setPosition(top_left_corner);
+	m_window.draw(shape);
 }
 
 void Screen::DisplayEnemy(const Entity& entity)

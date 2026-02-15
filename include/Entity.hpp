@@ -10,6 +10,7 @@ public:
     Entity(float dt, sf::Vector2u screen_size);
     ~Entity();
     void SetVelocity(sf::Vector2f velocity); 
+    bool UpdateLastShotTime(int32_t current_shot_time);
     uint8_t GetHealthPoints() const;
     sf::Vector2f GetTopLeftCorner() const;
     sf::Vector2f GetPosition() const;
@@ -36,6 +37,6 @@ protected:
     sf::Vector2u m_screen_size;             // size of screen
     sf::Vector2f m_lower_postion_bound;     // minimum postion / out of bounds top left
     sf::Vector2f m_upper_postion_bound;     // max position / out of bounds bottom right
-    
+    int32_t m_last_shot_time = -1;             // time in miliseconds when last shot was taken
     void SetPositionBounds();
 };

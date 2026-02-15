@@ -85,6 +85,17 @@ void Entity::SetVelocity(sf::Vector2f velocity)
     m_velocity = velocity;
 }
 
+bool Entity::UpdateLastShotTime(int32_t current_shot_time)
+{
+    int32_t shot_period = current_shot_time - m_last_shot_time;    
+    if ( shot_period > m_min_shot_period)
+    {
+        m_last_shot_time = current_shot_time;
+        return true;
+    }
+    return false;
+}
+
 float Entity::GetSpeed() const
 {
     return m_speed;

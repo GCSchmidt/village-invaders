@@ -17,6 +17,7 @@ enum class GameState
     Menu,
     Paused,
     Playing,
+    Lost,
     Exit
 };
 
@@ -38,7 +39,9 @@ private:
     const uint8_t m_n_enemies_per_row = 10;
     const sf::Vector2u m_window_size = sf::Vector2u(1200, 800);
     bool m_quit_flag = false;
+    bool m_lost = false;
     float m_play_time;
+    float m_lose_line_position_y = m_window_size.y * 0.8f;
     GameState m_state = GameState::Menu;
     DetectedKeys m_detected_keys;
     sf::RenderWindow m_window;
@@ -47,19 +50,24 @@ private:
     std::vector<Bullet> m_bullets;
     std::vector<Enemy> m_enemies;
     sf::Clock m_clock;
+
+    void SetupGame();
     void SetQuitFlag();
     bool GetQuitFalg();
     void DetectInput();
     void HandleState();
     void HandlePlayerInput();
     void HandlePlayerMovement();
-    void HanldeShooting();
+    void HanldePlayerShooting();
     void Display();
     void DisplayBullets();
     void DisplayEnemies();
     void UpdateSpriteLocations();
     void RemoveBullets();
     void CreateEnemies();
+    void RemoveEnemies();
+    void CheckIfLost();
+    void PlayLoop();
 
 public:
     Game();
