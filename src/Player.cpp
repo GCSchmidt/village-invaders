@@ -11,14 +11,7 @@ Player::Player(float dt, sf::Vector2u screen_size)
     m_shape_vector = sf::Vector2f(25, 25);
     m_min_shot_period = 500;                                        // minimum time between shots
     m_forward_vector = sf::Vector2f(0, -1);
-    // calculate position limits of player
-    sf::Vector2f half_size = m_shape_vector / 2.f;
-
-    m_lower_postion_bound = half_size;
-    m_upper_postion_bound = sf::Vector2f(
-        static_cast<float>(screen_size.x),
-        static_cast<float>(screen_size.y)
-    ) - half_size;
+    SetPositionBounds();
 }
 
 Player::~Player()

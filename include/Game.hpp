@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <Bullet.hpp>
 #include <Player.hpp>
+#include <Enemy.hpp>
 #include <Screen.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -33,6 +34,8 @@ class Game
 {
 private:
     const float m_dt = 0.01f;                                        // delta time in seconds
+    const uint8_t m_n_enemies = 50;
+    const uint8_t m_n_enemies_per_row = 10;
     const sf::Vector2u m_window_size = sf::Vector2u(1200, 800);
     bool m_quit_flag = false;
     float m_play_time;
@@ -42,6 +45,7 @@ private:
     Screen m_screen;
     Player m_player;
     std::vector<Bullet> m_bullets;
+    std::vector<Enemy> m_enemies;
     sf::Clock m_clock;
     void SetQuitFlag();
     bool GetQuitFalg();
@@ -51,8 +55,11 @@ private:
     void HandlePlayerMovement();
     void HanldeShooting();
     void Display();
-    void UpdateEntityLocations();
+    void DisplayBullets();
+    void DisplayEnemies();
+    void UpdateSpriteLocations();
     void RemoveBullets();
+    void CreateEnemies();
 
 public:
     Game();

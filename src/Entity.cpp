@@ -69,6 +69,17 @@ void Entity::UpdatePosition()
     m_position = new_position;
 }
 
+void Entity::SetPositionBounds()
+{
+    sf::Vector2f half_size = m_shape_vector / 2.f;
+
+    m_lower_postion_bound = half_size;
+    m_upper_postion_bound = sf::Vector2f(
+        static_cast<float>(m_screen_size.x),
+        static_cast<float>(m_screen_size.y)
+    ) - half_size;
+}
+
 void Entity::SetVelocity(sf::Vector2f velocity)
 {
     m_velocity = velocity;

@@ -37,5 +37,5 @@ protected:
     sf::Vector2f m_lower_postion_bound;     // minimum postion / out of bounds top left
     sf::Vector2f m_upper_postion_bound;     // max position / out of bounds bottom right
     
-
+    void SetPositionBounds();
 };

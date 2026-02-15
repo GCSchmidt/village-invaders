@@ -23,5 +23,7 @@ public:
     void DisplayPause();
     void DisplayGame(float play_time);
     void DisplayEntity(const Entity& entity);
+    void DisplayPlayer(const Entity& entity);
+    void DisplayEnemy(const Entity& entity);
     void DisplayBullet(const Bullet& bullet);
 };

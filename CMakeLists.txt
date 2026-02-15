@@ -18,6 +18,7 @@ add_executable(main
     src/Screen.cpp
     src/Entity.cpp
     src/Player.cpp
+    src/Enemy.cpp
     src/Bullet.cpp
 )
 target_compile_features(main PRIVATE cxx_std_17)

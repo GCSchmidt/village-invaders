@@ -7,7 +7,8 @@ Game::Game()
 , m_player(Player(m_dt, m_window_size))
 {
     m_window.setFramerateLimit(60);
-    
+    // create enemies base on rows and collumns
+    CreateEnemies();
 }
 
 Game::~Game()
@@ -75,7 +76,7 @@ void Game::HandleState()
 
             
             HandlePlayerInput();
-            UpdateEntityLocations();
+            UpdateSpriteLocations();
 
             break;
 
@@ -97,7 +98,6 @@ void Game::HandleState()
             break;
     }
 }
-
 
 void Game::HandlePlayerMovement()
 {
@@ -162,15 +162,11 @@ void Game::Display()
         case GameState::Playing:
             m_play_time = m_clock.getElapsedTime().asSeconds();
             m_screen.DisplayGame(m_play_time);
-            m_screen.DisplayEntity(m_player);
-            // display bullets
-            
-            for (Bullet& bullet : m_bullets)
-            {
-                m_screen.DisplayBullet(bullet);
-            }   
+            m_screen.DisplayPlayer(m_player);
 
-            // display enemies
+            DisplayBullets();
+            DisplayEnemies();
+
             break;
 
         case GameState::Paused:
@@ -184,7 +180,23 @@ void Game::Display()
     m_window.display();
 }
 
-void Game::UpdateEntityLocations()
+void Game::DisplayBullets()
+{
+    for (Bullet& bullet : m_bullets)
+    {
+        m_screen.DisplayBullet(bullet);
+    }   
+}
+
+void Game::DisplayEnemies()
+{
+    for (Enemy& enemy : m_enemies)
+    {
+        m_screen.DisplayEnemy(enemy);
+    }   
+}
+
+void Game::UpdateSpriteLocations()
 {
     // player
     m_player.UpdatePosition();
@@ -194,9 +206,12 @@ void Game::UpdateEntityLocations()
     {
         bullet.UpdatePosition();
     } 
-    
+
     // enemies 
-    // for enemy do ...
+    for (Enemy& enemy : m_enemies)
+    {
+        enemy.UpdatePosition();
+    }   
 }
 
 void Game::RemoveBullets()
@@ -210,6 +225,29 @@ void Game::RemoveBullets()
             }),
         m_bullets.end()
     );
+}
+
+void Game::CreateEnemies()
+{
+    uint8_t n_rows = m_n_enemies / m_n_enemies_per_row;
+    uint8_t n_cols = m_n_enemies_per_row;
+    
+    for (uint8_t row = 1 ; row <= n_rows ; row++)
+    {
+        for (uint8_t col = 1 ; col <= n_cols ; col++)
+        {
+            //create enemy
+            Enemy new_enemy = Enemy(
+                m_dt,
+                m_window_size, 
+                row,
+                col,
+                m_n_enemies,
+                m_n_enemies_per_row
+            );
+            m_enemies.push_back(new_enemy);
+        }
+    }
 }
 
 void Game::SetQuitFlag()

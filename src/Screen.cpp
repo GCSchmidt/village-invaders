@@ -47,6 +47,26 @@ void Screen::DisplayGame(float play_time)
 	WriteText();
 }
 
+void Screen::DisplayEnemy(const Entity& entity)
+{
+	sf::Vector2f shape_vector = entity.GetShapeVecor();
+	sf::RectangleShape shape = sf::RectangleShape( shape_vector );
+	shape.setFillColor( sf::Color::Red );
+	sf::Vector2f top_left_corner = entity.GetTopLeftCorner();
+	shape.setPosition(top_left_corner);
+	m_window.draw(shape);
+}
+
+void Screen::DisplayPlayer(const Entity& entity)
+{
+	sf::Vector2f shape_vector = entity.GetShapeVecor();
+	sf::RectangleShape shape = sf::RectangleShape( shape_vector );
+	shape.setFillColor( sf::Color::Green );
+	sf::Vector2f top_left_corner = entity.GetTopLeftCorner();
+	shape.setPosition(top_left_corner);
+	m_window.draw(shape);
+}
+
 void Screen::DisplayEntity(const Entity& entity)
 {
 	sf::Vector2f shape_vector = entity.GetShapeVecor();
