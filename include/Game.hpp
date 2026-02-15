@@ -66,8 +66,11 @@ private:
     void RemoveBullets();
     void CreateEnemies();
     void RemoveEnemies();
+    void RemoveDeadEnemies();
     void CheckIfLost();
     void PlayLoop();
+    void DetectHits();
+    bool DetectCollision(sf::FloatRect bounding_box_1, sf::FloatRect bounding_box_2);
 
 public:
     Game();

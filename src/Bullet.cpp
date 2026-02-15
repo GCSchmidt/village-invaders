@@ -65,9 +65,19 @@ bool Bullet::GetOutOfBounds() const
     return m_out_of_bounds;
 }
 
+bool Bullet::GetCollided() const
+{
+    return m_collided;
+}
+
 float Bullet::GetRadius() const
 {
     return m_radius;
+}
+
+void Bullet::Hit()
+{
+    m_collided = true;
 }
 
 void Bullet::SetVelocity()
@@ -78,4 +88,17 @@ void Bullet::SetVelocity()
 float Bullet::GetSpeed() const
 {
     return m_speed;
+}
+
+uint8_t Bullet::GetDamage() const
+{
+    return m_damage;
+}
+
+sf::FloatRect Bullet::GetBoundingBox() const
+{
+    sf::FloatRect bounding_box;
+    bounding_box.position = GetTopLeftCorner();
+    bounding_box.size = m_shape_vector; 
+    return bounding_box;
 }

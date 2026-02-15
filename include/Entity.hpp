@@ -14,6 +14,7 @@ public:
     uint8_t GetHealthPoints() const;
     sf::Vector2f GetTopLeftCorner() const;
     sf::Vector2f GetPosition() const;
+    sf::FloatRect GetBoundingBox() const;
     bool CheckIfDead() const;
     float GetSpeed() const;
     uint8_t GetShapeSize() const;
@@ -23,7 +24,7 @@ public:
     sf::Vector2f Entity::GetNewBulletPosition() const;
     void UpdateVelocity(sf::Vector2f change); 
     void UpdatePosition();
-    void Hit();
+    void Hit(uint8_t damage);
 
 protected:
     float m_dt;

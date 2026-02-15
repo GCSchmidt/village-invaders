@@ -31,6 +31,14 @@ sf::Vector2f Entity::GetPosition() const
     return m_position;
 }
 
+sf::FloatRect Entity::GetBoundingBox() const
+{
+    sf::FloatRect bounding_box;
+    bounding_box.position = GetTopLeftCorner();
+    bounding_box.size = m_shape_vector; 
+    return bounding_box;
+}
+
 sf::Vector2f Entity::GetNewBulletPosition() const
 {   
     sf::Vector2f bullet_postion;
@@ -104,4 +112,9 @@ float Entity::GetSpeed() const
 void Entity::UpdateVelocity(sf::Vector2f change)
 {
     m_velocity += change;
+}
+
+void Entity::Hit(uint8_t damage)
+{
+    m_health_points -= damage;
 }

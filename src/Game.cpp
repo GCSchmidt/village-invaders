@@ -39,6 +39,36 @@ void Game::PlayLoop()
     CheckIfLost();
     HandlePlayerInput();
     UpdateSpriteLocations();
+    DetectHits();
+    RemoveBullets();
+    RemoveDeadEnemies();
+}
+
+bool Game::DetectCollision(sf::FloatRect bounding_box_1, sf::FloatRect bounding_box_2)
+{
+    if (const std::optional intersection = bounding_box_1.findIntersection(bounding_box_2))
+    {
+        return true;
+    }
+    return false;
+}
+
+void Game::DetectHits()
+{
+    for (Bullet& bullet : m_bullets)
+    {
+        sf::FloatRect bullet_box = bullet.GetBoundingBox();
+        for (Enemy& enemy : m_enemies)
+        {
+            sf::FloatRect enemy_box = enemy.GetBoundingBox();
+            bool collision = DetectCollision(bullet_box, enemy_box);
+            if (collision)
+            {
+                enemy.Hit(bullet.GetDamage());
+                bullet.Hit();
+            }
+        }  
+    } 
 }
 
 void Game::DetectInput()
@@ -238,9 +268,22 @@ void Game::RemoveBullets()
         std::remove_if(m_bullets.begin(), m_bullets.end(),
             [](const Bullet& bullet)
             {
-                return bullet.GetOutOfBounds();
+                bool condition = (bullet.GetOutOfBounds() || bullet.GetCollided());
+                return condition;
             }),
         m_bullets.end()
+    );
+}
+
+void Game::RemoveDeadEnemies()
+{
+    m_enemies.erase(
+        std::remove_if(m_enemies.begin(), m_enemies.end(),
+            [](const Enemy& enemy)
+            {
+                return enemy.CheckIfDead();
+            }),
+        m_enemies.end()
     );
 }
 

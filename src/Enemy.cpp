@@ -22,6 +22,7 @@ Enemy::Enemy(
     m_speed =  200;
     m_min_shot_period = 1000;                                        // minimum time between shots
     m_forward_vector = sf::Vector2f(0, 1);
+    m_health_points = 1;
     
     sf::Vector2f initial_velocity = m_speed * sf::Vector2f(1, 0);
     SetVelocity(initial_velocity);
