@@ -75,6 +75,7 @@ void Enemy::UpdatePosition()
     float x_displacement = std::abs(m_position.x - m_initial_position.x);
     if (x_displacement >= m_max_x_displacement)
     {
+        MoveDown(10);
         SwitchDirection();
     }
 }
@@ -82,4 +83,9 @@ void Enemy::UpdatePosition()
 void Enemy::SwitchDirection()
 {
     SetVelocity(-m_velocity);
+}
+
+void Enemy::MoveDown(float shift)
+{
+    m_position.y += shift;
 }
