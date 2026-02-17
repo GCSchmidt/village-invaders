@@ -9,54 +9,74 @@ Screen::~Screen()
 {
 }
 
-void Screen::SetDisplayText(std::string new_text)
+void Screen::SetCenterText(std::string new_text)
 {
-    m_display_text = new_text;
+    m_center_text = new_text;
 }
 
-void Screen::WriteText()
+void Screen::SetHudText(std::string new_text)
 {
-    sf::Text text(m_font, m_display_text);
-	text.setCharacterSize(30);
-	text.setStyle(sf::Text::Bold);
-	text.setFillColor(sf::Color::White);
-	sf::Vector2f text_size = text.getLocalBounds().size;
+    m_hud_text = new_text;
+}
+
+void Screen::WriteCenterText()
+{
+    sf::Vector2u window_size = m_window.getSize();
+	sf::Text center_text(m_font, m_center_text);
+	center_text.setCharacterSize(30);
+	center_text.setStyle(sf::Text::Bold);
+	center_text.setFillColor(sf::Color::White);
+	sf::Vector2f center_text_size = center_text.getLocalBounds().size;
+	sf::Vector2f center_text_position = (sf::Vector2f(window_size) / 2.f) - (center_text_size / 2.f); 
+	center_text.setPosition(center_text_position);
+    m_window.draw(center_text);
+}
+
+void Screen::WriteHudText()
+{
 	sf::Vector2u window_size = m_window.getSize();
-	sf::Vector2f new_text_position = (sf::Vector2f(window_size) / 2.f) - (text_size / 2.f); 
-	text.setPosition(new_text_position);
-    m_window.draw(text);
+	sf::Text hud_text(m_font, m_hud_text);
+	hud_text.setCharacterSize(18);
+	hud_text.setStyle(sf::Text::Bold);
+	hud_text.setFillColor(sf::Color::White);
+	sf::Vector2f hud_text_size = hud_text.getLocalBounds().size;
+	sf::Vector2f hud_text_position;
+	hud_text_position.x = window_size.x - hud_text_size.x * 1.5 ;
+	hud_text_position.y = hud_text_size.y / 2.f;
+	hud_text.setPosition(hud_text_position);
+    m_window.draw(hud_text);
 }
 
 void Screen::DisplayMenu()
 {
-    SetDisplayText("Press [ENTER] to Start");
-	WriteText();
+    SetCenterText("Press [ENTER] to Start");
+	WriteCenterText();
 }
 
 void Screen::DisplayPause()
 {
-    SetDisplayText("Game is Paused\nPress [ENTER] to Resume\nor [ESC] for Menu");
-	WriteText();
+    SetCenterText("Game is Paused\nPress [ENTER] to Resume\nor [ESC] for Menu");
+	WriteCenterText();
 }
 
 void Screen::DisplayLost()
 {
-	SetDisplayText("You Failed to Save the Village\nPress [ESC] for Menu");
-	WriteText();
+	SetCenterText("You Failed to Save the Village\nPress [ESC] for Menu");
+	WriteCenterText();
 }
 
 void Screen::DisplayVictory()
 {
-	SetDisplayText("You Saved the Village\nPress [ESC] for Menu");
-	WriteText();
+	SetCenterText("You Saved the Village\nPress [ESC] for Menu");
+	WriteCenterText();
 }
 
 void Screen::DisplayGame(float play_time)
 {
-	float rounded_play_time = std::round(play_time);
-	std::string display_text = "Time: " + std::to_string(rounded_play_time) + "s";
-	SetDisplayText(display_text);
-	WriteText();
+	int rounded_play_time = int(play_time);
+	std::string display_text = "Time: " + std::to_string(rounded_play_time);
+	SetHudText(display_text);
+	WriteHudText();
 }
 
 void Screen::DisplayLine(float m_lose_line_position_y)
@@ -76,12 +96,6 @@ void Screen::DisplayLine(float m_lose_line_position_y)
 
 void Screen::DisplayEnemy(const Entity& entity)
 {
-	// sf::Vector2f shape_vector = entity.GetShapeVecor();
-	// sf::RectangleShape shape = sf::RectangleShape( shape_vector );
-	// shape.setFillColor( sf::Color::Red );
-	// sf::Vector2f top_left_corner = entity.GetTopLeftCorner();
-	// shape.setPosition(top_left_corner);
-	// m_window.draw(shape);
 	static sf::Vector2u texture_size = m_enemy_texture.getSize();
 	static sf::Vector2f shape_vector = entity.GetShapeVecor();
 	static sf::Vector2f scale;

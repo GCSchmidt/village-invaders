@@ -11,7 +11,8 @@ class Screen
 {
 private:
     const sf::Font m_font = sf::Font("assests/Press_Start_2P/PressStart2P.ttf");
-    std::string m_display_text;
+    std::string m_center_text;
+    std::string m_hud_text;
     sf::RenderWindow& m_window;
     sf::Texture m_player_texture = sf::Texture("assests/wizard.png");
     sf::Texture m_enemy_texture = sf::Texture("assests/monster.png");
@@ -23,8 +24,10 @@ private:
 public:
     Screen(sf::RenderWindow& window);
     ~Screen();
-    void SetDisplayText(std::string);
-    void WriteText();
+    void SetCenterText(std::string);
+    void SetHudText(std::string);
+    void WriteCenterText();
+    void WriteHudText();
     void DisplayMenu();
     void DisplayPause();
     void DisplayLost();
