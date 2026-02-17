@@ -45,6 +45,12 @@ void Screen::DisplayLost()
 	WriteText();
 }
 
+void Screen::DisplayVictory()
+{
+	SetDisplayText("You Saved the Village\nPress [ESC] for Menu");
+	WriteText();
+}
+
 void Screen::DisplayGame(float play_time)
 {
 	float rounded_play_time = std::round(play_time);

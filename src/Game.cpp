@@ -15,7 +15,8 @@ Game::~Game()
 
 void Game::GameLoop()
 {   
-    while ( m_window.isOpen() && (!m_quit_flag))
+
+    while ( m_window.isOpen() && (m_state != GameState::Exit))
 	{   
         while (const std::optional event = m_window.pollEvent())
         {
@@ -37,10 +38,11 @@ void Game::GameLoop()
 void Game::PlayLoop()
 {
     CheckIfLost();
+    CheckIfVictory();
     HandlePlayerInput();
     UpdateSpriteLocations();
     DetectHits();
-    RemoveBullets();
+    RemoveBulletsOutOfBounds();
     RemoveDeadEnemies();
 }
 
@@ -66,6 +68,7 @@ void Game::DetectHits()
             {
                 enemy.Hit(bullet.GetDamage());
                 bullet.Hit();
+                m_n_enemies--;
             }
         }  
     } 
@@ -135,9 +138,17 @@ void Game::HandleState()
                 m_clock.stop();
                 m_state = GameState::Menu;
             }
-
             break;
-        case GameState::Exit:
+        
+        case GameState::Victory:
+            if (m_detected_keys.esc)
+            {
+                m_clock.stop();
+                m_state = GameState::Menu;
+            }
+            break;
+
+        default:
             break;
     }
 }
@@ -220,8 +231,11 @@ void Game::Display()
             m_screen.DisplayLost();
             break;
 
-        case GameState::Exit:
-            m_quit_flag = true;
+        case GameState::Victory:
+            m_screen.DisplayVictory();
+            break;
+    
+        default:
             break;
     }
     m_window.display();
@@ -261,7 +275,7 @@ void Game::UpdateSpriteLocations()
     }   
 }
 
-void Game::RemoveBullets()
+void Game::RemoveBulletsOutOfBounds()
 {
     // remove out of bounds bullets
     m_bullets.erase(
@@ -287,8 +301,9 @@ void Game::RemoveDeadEnemies()
     );
 }
 
-void Game::CreateEnemies()
+void Game::CreateEnemies(uint8_t n_enemies = 30)
 {
+    m_n_enemies = n_enemies;
     uint8_t n_rows = m_n_enemies / m_n_enemies_per_row;
     uint8_t n_cols = m_n_enemies_per_row;
     
@@ -310,26 +325,22 @@ void Game::CreateEnemies()
     }
 }
 
-void Game::RemoveEnemies()
+void Game::RemoveAllEnemies()
 {
     m_enemies.clear();
 }
 
+void Game::RemoveAllBullets()
+{
+    m_bullets.clear();
+}
+
 void Game::SetupGame()
 {
-    RemoveEnemies();
+    RemoveAllBullets();
+    RemoveAllEnemies();
     m_player.Reset();
     CreateEnemies();
-}
-
-void Game::SetQuitFlag()
-{
-    m_quit_flag = ( m_state == GameState::Exit);
-}
-
-bool Game::GetQuitFalg()
-{
-    return m_quit_flag;
 }
 
 void Game::CheckIfLost()
@@ -345,4 +356,13 @@ void Game::CheckIfLost()
             return;
         }
     }   
+}
+
+void Game::CheckIfVictory()
+{
+    // all enemies have been killed
+    if (m_n_enemies <= 0)
+    {
+        m_state = GameState::Victory;
+    }
 }

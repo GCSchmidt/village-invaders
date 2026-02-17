@@ -22,6 +22,7 @@ public:
     void DisplayMenu();
     void DisplayPause();
     void DisplayLost();
+    void DisplayVictory();
     void DisplayGame(float play_time);
     void DisplayEntity(const Entity& entity);
     void DisplayPlayer(const Entity& entity);

@@ -18,6 +18,7 @@ enum class GameState
     Paused,
     Playing,
     Lost,
+    Victory,
     Exit
 };
 
@@ -35,11 +36,9 @@ class Game
 {
 private:
     const float m_dt = 0.01f;                                        // delta time in seconds
-    const uint8_t m_n_enemies = 50;
     const uint8_t m_n_enemies_per_row = 10;
     const sf::Vector2u m_window_size = sf::Vector2u(1200, 800);
-    bool m_quit_flag = false;
-    bool m_lost = false;
+    uint8_t m_n_enemies;                                       // number of alive enemies
     float m_play_time;
     float m_lose_line_position_y = m_window_size.y * 0.8f;
     GameState m_state = GameState::Menu;
@@ -52,8 +51,6 @@ private:
     sf::Clock m_clock;
 
     void SetupGame();
-    void SetQuitFlag();
-    bool GetQuitFalg();
     void DetectInput();
     void HandleState();
     void HandlePlayerInput();
@@ -63,11 +60,13 @@ private:
     void DisplayBullets();
     void DisplayEnemies();
     void UpdateSpriteLocations();
-    void RemoveBullets();
-    void CreateEnemies();
-    void RemoveEnemies();
+    void RemoveBulletsOutOfBounds();
+    void CreateEnemies(uint8_t n_enemies);
+    void RemoveAllEnemies();
+    void RemoveAllBullets();
     void RemoveDeadEnemies();
     void CheckIfLost();
+    void CheckIfVictory();
     void PlayLoop();
     void DetectHits();
     bool DetectCollision(sf::FloatRect bounding_box_1, sf::FloatRect bounding_box_2);
