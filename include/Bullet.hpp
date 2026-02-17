@@ -32,7 +32,7 @@ public:
 
 protected:
     float m_dt;
-    float m_radius = 5.0f;
+    float m_radius = 15.0f;
     uint8_t m_damage = 1;
     sf::Vector2f m_position;        // center of Bullet
     float m_speed = 1000;                  // size of velocity 

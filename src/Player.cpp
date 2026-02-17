@@ -4,7 +4,7 @@ Player::Player(float dt, sf::Vector2u screen_size)
 : Entity(dt, screen_size)
 {
     Reset();
-    m_shape_vector = sf::Vector2f(25, 25);
+    m_shape_vector = sf::Vector2f(50, 50);
     m_min_shot_period = 500;                                        // minimum time between shots
     m_forward_vector = sf::Vector2f(0, -1);
     SetPositionBounds();

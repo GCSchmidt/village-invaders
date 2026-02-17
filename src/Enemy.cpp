@@ -10,7 +10,7 @@ Enemy::Enemy(
 )
     : Entity(dt, screen_size)
 {
-    m_shape_vector = sf::Vector2f(25, 25);
+    m_shape_vector = sf::Vector2f(35, 35);
 
     SetOffset(n_enemies_per_row);
     SetMaxXDisplacement();
@@ -19,7 +19,7 @@ Enemy::Enemy(
     m_position = m_initial_position;
 
     m_velocity = sf::Vector2f(0, 0);
-    m_speed =  200;
+    m_speed =  300;
     m_min_shot_period = 1000;                                        // minimum time between shots
     m_forward_vector = sf::Vector2f(0, 1);
     m_health_points = 1;
