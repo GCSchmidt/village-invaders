@@ -15,7 +15,7 @@ Enemy::Enemy(
     m_min_shot_period = 1000;                                        // minimum time between shots
     m_forward_vector = sf::Vector2f(0, 1);
     m_health_points = 1;
-    m_speed =  300;
+    m_speed =  750;
     m_velocity = m_speed * sf::Vector2f(1, 0);
 
     // determine position and bound

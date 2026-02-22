@@ -215,7 +215,6 @@ void Game::Display()
             m_play_time = m_clock.getElapsedTime().asSeconds();
             
             m_screen.DisplayGame(m_play_time);
-            m_screen.DisplayLine(m_lose_line_position_y);
             m_screen.DisplayEntity(m_player);
 
             DisplayBullets();

@@ -18,9 +18,11 @@ private:
     sf::Texture m_player_texture = sf::Texture("assests/wizard.png");
     sf::Texture m_enemy_texture = sf::Texture("assests/monster.png");
     sf::Texture m_bullet_texture = sf::Texture("assests/fire_ball.png");
+    sf::Texture m_terrain_texture = sf::Texture("assests/terrain.png");
     sf::Sprite m_player_sprite = sf::Sprite(m_player_texture);
     sf::Sprite m_enemy_sprite = sf::Sprite(m_enemy_texture);
     sf::Sprite m_bullet_sprite = sf::Sprite(m_bullet_texture);
+    sf::Sprite m_terrain_sprite = sf::Sprite(m_terrain_texture);
 
 public:
     Screen(sf::RenderWindow& window);
@@ -38,5 +40,5 @@ public:
     void DisplayEntity(const Player& entity);
     void DisplayEntity(const Enemy& entity);
     void DisplayEntity(const Bullet& bullet);
-    void DisplayLine(float m_lose_line_position_y);
+    void DisplayTerrain();
 };

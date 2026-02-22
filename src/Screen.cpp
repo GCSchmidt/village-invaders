@@ -76,22 +76,21 @@ void Screen::DisplayGame(float play_time)
 	int rounded_play_time = int(play_time);
 	std::string display_text = "Time: " + std::to_string(rounded_play_time);
 	SetHudText(display_text);
+	DisplayTerrain();
 	WriteHudText();
 }
 
-void Screen::DisplayLine(float m_lose_line_position_y)
+void Screen::DisplayTerrain()
 {
-	sf::Vector2f shape_vector;
+	static sf::Vector2u texture_size = m_terrain_texture.getSize();
 	sf::Vector2u window_size = m_window.getSize();
-	shape_vector.x = window_size.x;
-	shape_vector.y = 10;
-	sf::RectangleShape shape = sf::RectangleShape( shape_vector );
-	shape.setFillColor( sf::Color::White );
-	sf::Vector2f top_left_corner;
-	top_left_corner.x = 0;
-	top_left_corner.y = m_lose_line_position_y;
-	shape.setPosition(top_left_corner);
-	m_window.draw(shape);
+	static sf::Vector2f scale;
+	scale.x = window_size.x / texture_size.x;
+	scale.y = window_size.y / texture_size.y;
+	sf::Vector2f top_left_corner = sf::Vector2f(0,0);
+	m_terrain_sprite.setPosition(top_left_corner);
+	m_terrain_sprite.setScale(scale);
+	m_window.draw(m_terrain_sprite);
 }
 
 void Screen::DisplayEntity(const Entity& entity)
