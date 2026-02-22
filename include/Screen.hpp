@@ -1,6 +1,7 @@
 #pragma once
-#include <Entity.hpp>
 #include <Bullet.hpp>
+#include <Player.hpp>
+#include <Enemy.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Window.hpp>
@@ -34,8 +35,8 @@ public:
     void DisplayVictory();
     void DisplayGame(float play_time);
     void DisplayEntity(const Entity& entity);
-    void DisplayPlayer(const Entity& entity);
-    void DisplayEnemy(const Entity& entity);
-    void DisplayBullet(const Bullet& bullet);
+    void DisplayEntity(const Player& entity);
+    void DisplayEntity(const Enemy& entity);
+    void DisplayEntity(const Bullet& bullet);
     void DisplayLine(float m_lose_line_position_y);
 };

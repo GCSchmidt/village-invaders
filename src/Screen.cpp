@@ -94,7 +94,31 @@ void Screen::DisplayLine(float m_lose_line_position_y)
 	m_window.draw(shape);
 }
 
-void Screen::DisplayEnemy(const Entity& entity)
+void Screen::DisplayEntity(const Entity& entity)
+{
+	sf::Vector2f shape_vector = entity.GetShapeVecor();
+	sf::RectangleShape shape = sf::RectangleShape( shape_vector );
+	shape.setFillColor( sf::Color::Green );
+	sf::Vector2f top_left_corner = entity.GetTopLeftCorner();
+	shape.setPosition(top_left_corner);
+	m_window.draw(shape);
+}
+
+void Screen::DisplayEntity(const Bullet &bullet)
+{
+	static sf::Vector2u texture_size = m_bullet_texture.getSize();
+	static sf::Vector2f shape_vector = bullet.GetShapeVecor();
+	static sf::Vector2f scale;
+	scale.x = shape_vector.x / texture_size.x;
+	scale.y = shape_vector.y / texture_size.y;
+	sf::Vector2f top_left_corner = bullet.GetTopLeftCorner();
+	m_bullet_sprite.setPosition(top_left_corner);
+	m_bullet_sprite.setScale(scale);
+	m_window.draw(m_bullet_sprite);
+}
+
+
+void Screen::DisplayEntity(const Enemy& entity)
 {
 	static sf::Vector2u texture_size = m_enemy_texture.getSize();
 	static sf::Vector2f shape_vector = entity.GetShapeVecor();
@@ -107,7 +131,7 @@ void Screen::DisplayEnemy(const Entity& entity)
 	m_window.draw(m_enemy_sprite);
 }
 
-void Screen::DisplayPlayer(const Entity& entity)
+void Screen::DisplayEntity(const Player& entity)
 {
 	static sf::Vector2u texture_size = m_player_texture.getSize();
 	static sf::Vector2f shape_vector = entity.GetShapeVecor();
@@ -118,27 +142,4 @@ void Screen::DisplayPlayer(const Entity& entity)
 	m_player_sprite.setPosition(top_left_corner);
 	m_player_sprite.setScale(scale);
 	m_window.draw(m_player_sprite);
-}
-
-void Screen::DisplayEntity(const Entity& entity)
-{
-	sf::Vector2f shape_vector = entity.GetShapeVecor();
-	sf::RectangleShape shape = sf::RectangleShape( shape_vector );
-	shape.setFillColor( sf::Color::Green );
-	sf::Vector2f top_left_corner = entity.GetTopLeftCorner();
-	shape.setPosition(top_left_corner);
-	m_window.draw(shape);
-}
-
-void Screen::DisplayBullet(const Bullet &bullet)
-{
-	static sf::Vector2u texture_size = m_bullet_texture.getSize();
-	static sf::Vector2f shape_vector = bullet.GetShapeVecor();
-	static sf::Vector2f scale;
-	scale.x = shape_vector.x / texture_size.x;
-	scale.y = shape_vector.y / texture_size.y;
-	sf::Vector2f top_left_corner = bullet.GetTopLeftCorner();
-	m_bullet_sprite.setPosition(top_left_corner);
-	m_bullet_sprite.setScale(scale);
-	m_window.draw(m_bullet_sprite);
 }

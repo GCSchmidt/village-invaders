@@ -216,7 +216,7 @@ void Game::Display()
             
             m_screen.DisplayGame(m_play_time);
             m_screen.DisplayLine(m_lose_line_position_y);
-            m_screen.DisplayPlayer(m_player);
+            m_screen.DisplayEntity(m_player);
 
             DisplayBullets();
             DisplayEnemies();
@@ -245,7 +245,7 @@ void Game::DisplayBullets()
 {
     for (Bullet& bullet : m_bullets)
     {
-        m_screen.DisplayBullet(bullet);
+        m_screen.DisplayEntity(bullet);
     }   
 }
 
@@ -253,7 +253,7 @@ void Game::DisplayEnemies()
 {
     for (Enemy& enemy : m_enemies)
     {
-        m_screen.DisplayEnemy(enemy);
+        m_screen.DisplayEntity(enemy);
     }   
 }
 
