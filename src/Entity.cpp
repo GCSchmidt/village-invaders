@@ -11,24 +11,34 @@ Entity::~Entity()
 {
 }
 
-uint8_t Entity::GetHealthPoints() const
+sf::Vector2f Entity::GetVelocity() const
 {
-    return m_health_points;
+    return m_velocity;
 }
 
-sf::Vector2f Entity::GetTopLeftCorner() const
+void Entity::SetVelocity(sf::Vector2f velocity)
 {
-    return m_position - m_shape_vector/2.f;
-}
-
-int32_t Entity::GetMinShotPeriod() const
-{
-    return m_min_shot_period;
+    m_velocity = velocity;
 }
 
 sf::Vector2f Entity::GetPosition() const
 {
     return m_position;
+}
+
+void Entity::SetPostion(sf::Vector2f position)
+{
+    m_position = position;
+}
+
+float Entity::GetSpeed() const
+{
+    return m_speed;
+}
+
+sf::Vector2f Entity::GetTopLeftCorner() const
+{
+    return m_position - m_shape_vector/2.f;
 }
 
 sf::FloatRect Entity::GetBoundingBox() const
@@ -39,16 +49,9 @@ sf::FloatRect Entity::GetBoundingBox() const
     return bounding_box;
 }
 
-sf::Vector2f Entity::GetNewBulletPosition() const
-{   
-    sf::Vector2f bullet_postion;
-    bullet_postion.x = m_position.x;
-    sf::Vector2f half_shape = m_shape_vector/2.f;
-    sf::Vector2f shift;
-    shift.x = half_shape.x * m_forward_vector.x;
-    shift.y = half_shape.y * m_forward_vector.y;
-    bullet_postion = m_position + shift;
-    return bullet_postion;
+sf::Vector2f Entity::GetShapeVecor() const
+{
+    return m_shape_vector;
 }
 
 sf::Vector2f Entity::GetForwardVector() const
@@ -56,25 +59,20 @@ sf::Vector2f Entity::GetForwardVector() const
     return m_forward_vector;
 }
 
-sf::Vector2f Entity::GetShapeVecor() const
+void Entity::UpdateVelocity(sf::Vector2f change)
 {
-    return m_shape_vector;
+    m_velocity += change;
 }
 
-bool Entity::CheckIfDead() const
-{
-    return (m_health_points <= 0);
-}
-
-void Entity::UpdatePosition()
+void Entity::UpdatePosition(bool clamp)
 {
     sf::Vector2f shift = m_velocity * m_dt;
-    sf::Vector2f new_position = m_position + shift;
-
-    new_position.x = std::clamp(new_position.x, m_lower_postion_bound.x, m_upper_postion_bound.x);
-    new_position.y = std::clamp(new_position.y, m_lower_postion_bound.y, m_upper_postion_bound.y);
-
-    m_position = new_position;
+    m_position += shift;
+    if (clamp)
+    {
+        m_position.x = std::clamp(m_position.x, m_lower_postion_bound.x, m_upper_postion_bound.x);
+        m_position.y = std::clamp(m_position.y, m_lower_postion_bound.y, m_upper_postion_bound.y);
+    }
 }
 
 void Entity::SetPositionBounds()
@@ -86,35 +84,4 @@ void Entity::SetPositionBounds()
         static_cast<float>(m_screen_size.x),
         static_cast<float>(m_screen_size.y)
     ) - half_size;
-}
-
-void Entity::SetVelocity(sf::Vector2f velocity)
-{
-    m_velocity = velocity;
-}
-
-bool Entity::UpdateLastShotTime(int32_t current_shot_time)
-{
-    int32_t shot_period = current_shot_time - m_last_shot_time;    
-    if ( shot_period > m_min_shot_period)
-    {
-        m_last_shot_time = current_shot_time;
-        return true;
-    }
-    return false;
-}
-
-float Entity::GetSpeed() const
-{
-    return m_speed;
-}
-
-void Entity::UpdateVelocity(sf::Vector2f change)
-{
-    m_velocity += change;
-}
-
-void Entity::Hit(uint8_t damage)
-{
-    m_health_points -= damage;
 }

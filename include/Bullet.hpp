@@ -1,50 +1,31 @@
 #pragma once
+#include <Entity.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Text.hpp>
 
-
 enum class BulletSource
 {
-    Palyer,
+    Player,
     Enemy
 };
 
-class Bullet
+class Bullet : public Entity
 {
 private:
 
 public:
     Bullet(float dt, sf::Vector2f position, sf::Vector2f forward_vector, BulletSource source, sf::Vector2u screen_size);
     ~Bullet();
-    sf::Vector2f GetTopLeftCorner() const;
-    sf::Vector2f GetPosition() const;
-    void SetPostion();
-    float GetSpeed() const;
-    uint8_t GetDamage() const;
-    sf::Vector2f GetShapeVecor() const;
-    void UpdatePosition();
-    void SetOutOfBounds();
+    uint8_t GetDamage() const;              
+    void DetermineOutOfBounds();            
     bool GetOutOfBounds() const;
     bool GetCollided() const;
-    float GetRadius() const;
     void Hit();
-    sf::FloatRect Bullet::GetBoundingBox() const;
+    void UpdatePosition();
 
 protected:
-    float m_dt;
-    float m_radius = 15.0f;
-    uint8_t m_damage = 1;
-    sf::Vector2f m_position;        // center of Bullet
-    float m_speed = 1000;                  // size of velocity 
+    uint8_t m_damage = 1;               // damage dealt on hit
     bool m_out_of_bounds = false;       // check if bullet is of screen
-    bool m_collided = false;              // check if bullett has hot anythings and should be destroyed
-    sf::Vector2f m_forward_vector;  //   
-    BulletSource m_source;
-    sf::Vector2f m_velocity;        // change in location per frame
-    sf::Vector2f m_shape_vector = sf::Vector2f(m_radius*2, m_radius*2);
-    sf::Vector2u m_screen_size;
-    sf::Vector2f m_lower_postion_bound;
-    sf::Vector2f m_upper_postion_bound;
-
-    void SetVelocity(); 
+    bool m_collided = false;            // check if bullett has hot anythings and should be destroyed
+    BulletSource m_source;              // what shot the bullet / should maybe be datatype
 };

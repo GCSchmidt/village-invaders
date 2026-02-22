@@ -1,7 +1,7 @@
 #pragma once
-#include <Entity.hpp>
+#include <Character.hpp>
 
-class Enemy : public Entity
+class Enemy : public Character
 {
 private:
     sf::Vector2f m_initial_position;
@@ -12,7 +12,6 @@ private:
     void SetMaxXDisplacement();
     void SwitchDirection();
     void MoveDown(float shift);
-    //gap between centers of enemies 
 
 public:
     Enemy(
@@ -29,5 +28,4 @@ public:
 
 protected:
     void SetPositionBounds();
-    
 };

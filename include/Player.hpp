@@ -1,10 +1,10 @@
 #pragma once
-#include <Entity.hpp>
+#include <Character.hpp>
 
-class Player : public Entity
+class Player : public Character
 {
 private:
-
+    
 public:
     Player(float dt, sf::Vector2u screen_size);
     ~Player();

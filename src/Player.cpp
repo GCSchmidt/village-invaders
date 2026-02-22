@@ -1,7 +1,7 @@
 #include <Player.hpp>
 
 Player::Player(float dt, sf::Vector2u screen_size)
-: Entity(dt, screen_size)
+: Character(dt, screen_size)
 {
     Reset();
     m_shape_vector = sf::Vector2f(50, 50);
@@ -13,7 +13,6 @@ Player::Player(float dt, sf::Vector2u screen_size)
 Player::~Player()
 {
 }
-
 
 void Player::Reset()
 {

@@ -17,6 +17,7 @@ add_executable(main
     src/Game.cpp
     src/Screen.cpp
     src/Entity.cpp
+    src/Character.cpp
     src/Player.cpp
     src/Enemy.cpp
     src/Bullet.cpp

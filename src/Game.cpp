@@ -187,7 +187,7 @@ void Game::HanldePlayerShooting()
             Bullet player_bullet = Bullet(m_dt,
                 position, 
                 forward_vector,
-                BulletSource::Palyer,
+                BulletSource::Player,
                 m_window_size
             );
             m_bullets.push_back(player_bullet);
@@ -260,12 +260,13 @@ void Game::DisplayEnemies()
 void Game::UpdateSpriteLocations()
 {
     // player
-    m_player.UpdatePosition();
+    m_player.UpdatePosition(true);
     
     // bullets
     for (Bullet& bullet : m_bullets)
     {
         bullet.UpdatePosition();
+        bullet.DetermineOutOfBounds();
     } 
 
     // enemies 
